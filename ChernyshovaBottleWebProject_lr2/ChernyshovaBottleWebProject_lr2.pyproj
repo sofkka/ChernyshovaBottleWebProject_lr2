@@ -19,6 +19,8 @@
     <Name>ChernyshovaBottleWebProject_lr2</Name>
     <RootNamespace>ChernyshovaBottleWebProject_lr2</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <WebBrowserPort>
+    </WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
