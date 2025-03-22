@@ -11,7 +11,7 @@
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
-    <LaunchProvider>Web launcher</LaunchProvider>
+    <LaunchProvider>Django launcher</LaunchProvider>
     <OutputPath>.</OutputPath>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <PythonDebugWebServerCommandArguments>--debug $(CommandLineArguments)</PythonDebugWebServerCommandArguments>
@@ -21,6 +21,7 @@
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <WebBrowserPort>
     </WebBrowserPort>
+    <PythonRunWebServerCommandType>код</PythonRunWebServerCommandType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
