@@ -3,11 +3,12 @@ import re
 from datetime import datetime
 
 # список допустимых доменов
-ALLOWED_DOMAINS = ['gmail.com', 'vk.com', 'mail.ru', 'yahoo.com', 'outlook.com']
+ALLOWED_DOMAINS = ['gmail.com', 'yandex.ru', 'mail.ru', 'yahoo.com', 'outlook.com']
 
+# браузер отправляет POST-запрос на /home
 @post('/home', method='post')
 def my_form():
-
+    
     # получение данных из формы
     question = request.forms.get('QUEST', '').strip()
     username = request.forms.get('USERNAME', '').strip()
@@ -17,17 +18,17 @@ def my_form():
     if not email or not username or not question:
         return "Please fill in all fields!"
 
-    # проверка длины имени (не более 15 символов)
-    if len(username) > 15:
-        return "Username should be no more than 15 characters!"
+    # проверка длины имени (не более 25 символов)
+    if len(username) > 25:
+        return "Username should be no more than 25 characters!"
 
-    # проверка длины почты (не более 15 символов)
-    if len(email) > 15:
-        return "Email should be no more than 15 characters!"
+    # проверка длины почты (не более 254 символов)
+    if len(email) > 254:
+        return "Email should be no more than 254 characters!"
 
-    # проверка длины вопроса (не более 200 символов)
-    if len(question) > 200:
-        return "Question should be no more than 200 characters!"
+    # проверка длины вопроса (не более 1000 символов)
+    if len(question) > 1000:
+        return "Question should be no more than 1000 characters!"
 
     # проверка длины вопроса (не менее 5 символов)
     if len(question) < 5:
@@ -42,17 +43,13 @@ def my_form():
         return "Email should not start with a digit!"
 
     # проверка формата email и допустимых доменов
-    if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
-        return "Incorrect email format! Please change your address!"
+    if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-z]+\.[a-z]+$', email):
+        return f"Incorrect email format! Please change your address! Please use one of the following domains: {', '.join(ALLOWED_DOMAINS)}"
 
     # проверка, что домен email находится в списке допустимых
     domain = email.split('@')[1]
     if domain not in ALLOWED_DOMAINS:
         return f"Email domain '{domain}' is not allowed. Please use one of the following: {', '.join(ALLOWED_DOMAINS)}"
-
-    # проверка, что email не содержит запрещенных символов (только латинские буквы, цифры, точки, подчеркивания, дефисы)
-    if not re.match(r'^[a-zA-Z0-9_.+-]+$', email.split('@')[0]):
-        return "Email contains invalid characters. Please use only Latin letters, numbers, dots, underscores, and hyphens."
 
     # получение текущей даты
     current_date = datetime.now().strftime("%Y-%m-%d")
