@@ -1,7 +1,9 @@
-from bottle import post, request, response
+from bottle import post, request
 import re
 from datetime import datetime
 import pdb  # импортируем модуль для отладки
+import json
+import os
 
 # словарь для хранения вопросов (email -> question)
 email_and_question = {}
@@ -9,7 +11,24 @@ email_and_question = {}
 # список допустимых доменов
 ALLOWED_DOMAINS = ['gmail.com', 'yandex.ru', 'mail.ru', 'yahoo.com', 'outlook.com']
 
-# браузер отправляет POST-запрос на /home
+DATA_FILE = "data.txt"
+
+# загрузка данных из файла
+def load_data():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, 'r') as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return {}
+    return {}
+
+# сохранение данных в файл
+def save_data(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+
 @post('/home', method='post')
 def my_form():
     # получение данных из формы
@@ -53,13 +72,47 @@ def my_form():
     domain = email.split('@')[1]
     if domain not in ALLOWED_DOMAINS:
         return f"Email domain '{domain}' is not allowed. Please use one of the following: {', '.join(ALLOWED_DOMAINS)}"
-    
+
+    # проверка, что вопрос не состоит из одних цифр
+    if question.isdigit():
+        return "Question should not consist of digits only!"
+
     # записываем данные в словарь в виде списка [username, question]
-    list1 = [username, question]
-    email_and_question[email] = list1
+    email_and_question[email] = [username, question]
     
     # точка останова для отладки
     pdb.set_trace()
+
+    # загружаем существующие данные
+    data = load_data()
+
+    # если данные для введенной ПОЧТЫ УЖЕ ЕСТЬ, проверяем их структуру
+    if email in data:
+        # Если данные старого формата ([username, question]), преобразуем в новый формат
+        if isinstance(data[email], list):
+            # извлекаем имя пользователя и вопрос из списка
+            old_username, old_question = data[email]
+            # создаем новую структуру данных для этой почты
+            data[email] = {
+                'username': old_username,
+                'questions': [old_question]
+            }
+    
+    # инициализация записи для пользователя, если нет такой ПОЧТЫ
+    if email not in data:
+        data[email] = {
+            'username': username,
+            'questions': []
+        }
+
+    # проверка на дубликаты ВОПРОСА
+    if question not in data[email]['questions']:
+        data[email]['questions'].append(question)
+    else:
+        return "You've already asked this question!"
+
+    # Сохраняем данные
+    save_data(data)
 
     # получение текущей даты
     current_date = datetime.now().strftime("%Y-%m-%d")

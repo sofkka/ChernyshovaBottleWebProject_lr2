@@ -1,0 +1,15 @@
+{
+    "sof@mail.ru": {
+        "username": "Sofya",
+        "questions": [
+            "Why bottle???",
+            "I didn't understand, why bottle???"
+        ]
+    },
+    "allik@mail.ru": {
+        "username": "Alla",
+        "questions": [
+            "Why I was burn in Russia?"
+        ]
+    }
+}
