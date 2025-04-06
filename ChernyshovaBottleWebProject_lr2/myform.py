@@ -1,6 +1,10 @@
 from bottle import post, request, response
 import re
 from datetime import datetime
+import pdb  # импортируем модуль для отладки
+
+# словарь для хранения вопросов (email -> question)
+email_and_question = {}
 
 # список допустимых доменов
 ALLOWED_DOMAINS = ['gmail.com', 'yandex.ru', 'mail.ru', 'yahoo.com', 'outlook.com']
@@ -8,7 +12,6 @@ ALLOWED_DOMAINS = ['gmail.com', 'yandex.ru', 'mail.ru', 'yahoo.com', 'outlook.co
 # браузер отправляет POST-запрос на /home
 @post('/home', method='post')
 def my_form():
-    
     # получение данных из формы
     question = request.forms.get('QUEST', '').strip()
     username = request.forms.get('USERNAME', '').strip()
@@ -50,11 +53,17 @@ def my_form():
     domain = email.split('@')[1]
     if domain not in ALLOWED_DOMAINS:
         return f"Email domain '{domain}' is not allowed. Please use one of the following: {', '.join(ALLOWED_DOMAINS)}"
+    
+    # записываем данные в словарь
+    email_and_question[email] = question
+    
+    # точка останова для отладки
+    pdb.set_trace()
 
     # получение текущей даты
     current_date = datetime.now().strftime("%Y-%m-%d")
 
     # формирование результирующего сообщения
     result_message = f"Thanks, {username}! <br>The answer will be sent to the email {email}. <br>Access Date: {current_date}"
-
+    
     return result_message
