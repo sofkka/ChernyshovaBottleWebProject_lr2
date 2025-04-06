@@ -54,8 +54,9 @@ def my_form():
     if domain not in ALLOWED_DOMAINS:
         return f"Email domain '{domain}' is not allowed. Please use one of the following: {', '.join(ALLOWED_DOMAINS)}"
     
-    # записываем данные в словарь
-    email_and_question[email] = question
+    # записываем данные в словарь в виде списка [username, question]
+    list1 = [username, question]
+    email_and_question[email] = list1
     
     # точка останова для отладки
     pdb.set_trace()
