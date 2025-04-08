@@ -1,7 +1,7 @@
 from bottle import post, request
 import re
 from datetime import datetime
-import pdb  # импортируем модуль для отладки
+import pdb
 import json
 import os
 
@@ -15,17 +15,24 @@ DATA_FILE = "data.txt"
 
 # загрузка данных из файла
 def load_data():
+    # если файл существует
     if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, 'r') as f:
+        # используем оператор with для безопасной работы с файлом
+        with open(DATA_FILE, 'r') as f:     # 'r' - режим чтения
+            # пытаемся загрузить JSON-данные из файла
             try:
                 return json.load(f)
             except json.JSONDecodeError:
+                # в случае ошибки декодирования JSON возвращаем пустой словарь
                 return {}
+    # если файл не существует, возвращаем пустой словарь
     return {}
 
 # сохранение данных в файл
 def save_data(data):
+    # используем оператор with для безопасной работы с файлом
     with open(DATA_FILE, 'w') as f:
+        # в параметрах - данные для сохранения, файл для записи, форматирование с отступами, сохранение символов Unicode нетронутыми
         json.dump(data, f, indent=4, ensure_ascii=False)
 
 
@@ -40,9 +47,9 @@ def my_form():
     if not email or not username or not question:
         return "Please fill in all fields!"
 
-    # проверка длины имени (не более 25 символов)
-    if len(username) > 25:
-        return "Username should be no more than 25 characters!"
+    # проверка длины имени (не более 64 символов)
+    if len(username) > 64:
+        return "Username should be no more than 64 characters!"
 
     # проверка длины почты (не более 254 символов)
     if len(email) > 254:
@@ -51,10 +58,6 @@ def my_form():
     # проверка длины вопроса (не более 1000 символов)
     if len(question) > 1000:
         return "Question should be no more than 1000 characters!"
-
-    # проверка длины вопроса (не менее 5 символов)
-    if len(question) < 5:
-        return "Question should be more than 5 characters!"
 
     # проверка имени: только латинские буквы, без цифр и других символов
     if not re.match(r'^[a-zA-Z]+$', username):
@@ -76,6 +79,10 @@ def my_form():
     # проверка, что вопрос не состоит из одних цифр
     if question.isdigit():
         return "Question should not consist of digits only!"
+
+    # проверка, что вопрос состоит минимум из 3 букв
+    if not re.search(r'[a-zA-Z]{3,}', question):
+        return "Question must contain at least 3 Latin letters!"
 
     # записываем данные в словарь в виде списка [username, question]
     email_and_question[email] = [username, question]
@@ -111,7 +118,10 @@ def my_form():
     else:
         return "You've already asked this question!"
 
-    # Сохраняем данные
+    # обновляем имя пользователя
+    data[email]['username'] = username
+
+    # сохраняем данные
     save_data(data)
 
     # получение текущей даты
