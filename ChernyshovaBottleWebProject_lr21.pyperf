@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ProfilingTarget xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectTarget>
+    <TargetProject>aafe20fc-408c-4e26-b28a-b2dd743d7646</TargetProject>
+    <FriendlyName>ChernyshovaBottleWebProject_lr2</FriendlyName>
+  </ProjectTarget>
+  <Reports>
+    <Report>
+      <Filename>C:\Users\admin\AppData\Local\Temp\ChernyshovaBottleWebProject_lr21_20250415.vsp</Filename>
+    </Report>
+  </Reports>
+  <UseVTune>false</UseVTune>
+</ProfilingTarget>
