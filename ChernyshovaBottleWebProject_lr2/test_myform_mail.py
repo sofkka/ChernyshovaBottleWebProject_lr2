@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: cp1251 -*-
 # Импортируется модуль unittest для создания и запуска тестов
 import unittest
 # Импортируется модуль myform_mail с функцией проверки email
@@ -27,17 +27,10 @@ class TestEmailValidation(unittest.TestCase):
         # Перебираются email-адреса из списка
         for email in list_mail_cor:
             # Проверяется, что функция is_valid_email возвращает True
-            self.assertTrue(
-                myform_mail.is_valid_email(email),
-                f"Was expected that {email} must be a valid email"
-                )
+            self.assertTrue(myform_mail.is_valid_email(email))
 
     # Определяется метод для проверки некорректных email-адресов
     def test_invalid_emails(self):
-        # Создается email с локальной частью длиннее 64 символов
-        long_local = "s" * 65 + "@mail.ru"
-        # Создается email с доменной частью длиннее 255 символов
-        long_domain = "user@" + "s" * 250 + ".com"
         # Создается список некорректных email-адресов
         list_mail_uncor = [
             # Пустая строка
@@ -65,9 +58,9 @@ class TestEmailValidation(unittest.TestCase):
             # Несколько символов @
             "s1@of@mail.ru",
             # Локальная часть длиннее 64 символов
-            long_local,
+            "s" * 65 + "@mail.ru",
             # Доменная часть длиннее 255 символов
-            long_domain,
+            "user@" + "s" * 250 + ".com",
             # Очень длинный адрес
             "s" * 100 + "@" + "s" * 150 + ".ru",
             # Имя пользователя начинается с точки
@@ -84,10 +77,7 @@ class TestEmailValidation(unittest.TestCase):
         # Перебираются email-адреса из списка
         for email in list_mail_uncor:
             # Проверяется, что функция is_valid_email возвращает False
-            self.assertFalse(
-                myform_mail.is_valid_email(email),
-                f"Was expected that {email} must be an invalid email"
-                )
+            self.assertFalse(myform_mail.is_valid_email(email))
 
 # Проверяется, запускается ли скрипт напрямую
 if __name__ == '__main__':
