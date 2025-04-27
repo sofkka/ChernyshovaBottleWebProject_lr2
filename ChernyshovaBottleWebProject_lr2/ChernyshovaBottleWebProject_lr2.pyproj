@@ -19,8 +19,7 @@
     <Name>ChernyshovaBottleWebProject_lr2</Name>
     <RootNamespace>ChernyshovaBottleWebProject_lr2</RootNamespace>
     <InterpreterId>MSBuild|env1|$(MSBuildProjectFullPath)</InterpreterId>
-    <WebBrowserPort>
-    </WebBrowserPort>
+    <WebBrowserPort>443</WebBrowserPort>
     <PythonRunWebServerCommandType>код</PythonRunWebServerCommandType>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <TestFramework>unittest</TestFramework>
@@ -57,7 +56,7 @@
     <Folder Include="views\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="data.txt" />
+    <Content Include="data.json" />
     <Content Include="requirements.txt" />
     <Content Include="static\content\bootstrap.css" />
     <Content Include="static\content\bootstrap.min.css" />

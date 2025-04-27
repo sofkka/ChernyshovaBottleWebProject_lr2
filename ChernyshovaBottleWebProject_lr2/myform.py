@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: cp1251 -*-
 from bottle import post, request
 import re
 from datetime import datetime
@@ -7,17 +7,14 @@ import json
 import os
 from myform_mail import is_valid_email
 
-# словарь дл€ хранени€ вопросов (email -> question)
-email_and_question = {}
-
-DATA_FILE = "data.txt"
+DATA_FILE = "data.json"
 
 # загрузка данных из файла
 def load_data():
     # если файл существует
     if os.path.exists(DATA_FILE):
         # используем оператор with дл€ безопасной работы с файлом
-        with open(DATA_FILE, 'r') as f:     # 'r' - режим чтени€
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:     # 'r' - режим чтени€
             # пытаемс€ загрузить JSON-данные из файла
             try:
                 return json.load(f)
@@ -72,9 +69,6 @@ def my_form():
     # ѕровер€етс€, что вопрос содержит минимум 3 буквы
     if not re.search(r'[a-zA-Z]{3,}', question):
         return "Question must contain at least 3 Latin letters!"
-
-    # «аписываютс€ данные в словарь
-    email_and_question[email] = [username, question]
     
     # ”станавливаетс€ точка останова дл€ отладки
     # pdb.set_trace()
